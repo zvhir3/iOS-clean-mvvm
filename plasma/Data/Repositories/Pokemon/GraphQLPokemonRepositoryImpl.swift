@@ -1,5 +1,5 @@
 //
-//  GraphQlPokemonService.swift
+//  GraphQlPokemonRepositoryImpl.swift
 //  plasma
 //
 //  Created by Luminous Latte on 06/08/2025.
@@ -7,7 +7,7 @@
 
 import Alamofire
 
-class GraphQLPokemonService: PokemonServiceProtocol {
+class GraphQLPokemonRepositoryImpl: PokemonRepository {
     private let baseUrl = "https://beta.pokeapi.co/graphql/v1beta"
 
     func fetchPokemonList(limit: Int, offset: Int, completion: @escaping (Result<PokemonListModel, AFError>) -> Void) {

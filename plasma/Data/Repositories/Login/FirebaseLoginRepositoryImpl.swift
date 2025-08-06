@@ -1,21 +1,20 @@
 //
-//  AlamofireService.swift
+//  MockFirebaseLoginRepoImpl.swift
 //  plasma
 //
-//  Created by NightfallNest on 05/08/2025.
+//  Created by Luminous Latte on 06/08/2025.
 //
 
-import Foundation
-import Alamofire
+import FirebaseAuth
 
-class MockRestLoginService: LoginServiceProtocol {
+class FirebaseLoginRepositoryImpl: LoginRepository {
     func login(email: String, password: String, completion: @escaping (Result<UserModel, Error>) -> Void) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             if email == "user@gmail.com" && password == "user123" {
-                let user = UserModel(id: 42, name: "Mock User", email: email)
+                let user = UserModel(id: 1, name: "Test User", email: email)
                 completion(.success(user))
             } else {
-                let error = NSError(domain: "MockAlamofireAuth", code: 401, userInfo: [NSLocalizedDescriptionKey: "Invalid email or password"])
+                let error = NSError(domain: "MockAuth", code: 401, userInfo: [NSLocalizedDescriptionKey: "Invalid credentials"])
                 completion(.failure(error))
             }
         }

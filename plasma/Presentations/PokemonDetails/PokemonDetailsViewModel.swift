@@ -12,17 +12,17 @@ class PokemonDetailsViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var errorMessage: String?
 
-    private let service: PokemonServiceProtocol
+    private let repository: PokemonRepository
 
-    init(service: PokemonServiceProtocol) {
-        self.service = service
+    init(repository: PokemonRepository) {
+        self.repository = repository
     }
 
     func fetchPokemonDetails(name: String) {
         isLoading = true
         errorMessage = nil
 
-        service.fetchPokemonDetail(name: name) { [weak self] result in
+        repository.fetchPokemonDetail(name: name) { [weak self] result in
             DispatchQueue.main.async {
                 guard let self = self else { return }
                 self.isLoading = false

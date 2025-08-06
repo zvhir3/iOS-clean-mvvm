@@ -1,16 +1,29 @@
-# iOS-MVVM
+# iOS-Clean-MVVM
 
-A modern SwiftUI-based Pokemon exploration app built with MVVM architecture, featuring user authentication and Pokemon list and details data display.
+A modern SwiftUI-based app built with a **Clean MVVM** architecture, featuring user authentication and Pokémon list and stats view.
 
 ## 🏗️ Architecture
 
-This project follows the **Model-View-ViewModel (MVVM)** architectural pattern with a separation of concerns:
+This project applies the **Clean MVVM** pattern — combining the simplicity of MVVM with the layered separation of Clean Architecture.
 
-- **Models**: Data structures representing Pokemon, user data, and API responses
-- **Views**: SwiftUI views for user interface
-- **ViewModels**: Business logic and state management
-- **Services**: Data fetching and authentication services
-- **Utils**: Utility classes and helpers
+- **Data**: 
+  - `Models` → Network/response models  
+  - `Repositories` → Implementations for REST, GraphQL, Firebase, etc.
+- **Domain**: 
+  - `Repositories` → Protocols defining contracts for data access  
+  - `UseCases` → Business logic (application rules)
+- **Presentation**: 
+  - `Views` → SwiftUI screens and UI components  
+  - `ViewModels` → State management, input/output binding
+- **Shared**:
+  - `Configs` → Source configuration (active data source choices)  
+  - `Factories` → Repository factories for dependency injection  
+  - `Utils` → Reusable helpers (e.g., `AuthChecker`)  
+
+This layered approach ensures:
+- Clear **separation of concerns**  
+- Easy **switching between data sources** (REST ↔ GraphQL, Firebase ↔ REST)  
+- Better **testability** and **scalability**
 
 ## 📱 Features
 
@@ -36,4 +49,5 @@ by Raúl Ferrer García
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
 

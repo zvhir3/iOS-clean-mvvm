@@ -13,15 +13,16 @@ struct PokemonListView: View {
         NavigationView {
             List {
                 ForEach(viewModel.pokemons, id: \.name) { pokemon in
-                    PokemonRow(
+                    let row = PokemonRow(
                         pokemon: pokemon,
-                        service: viewModel.service
+                        repository: viewModel.repository
                     )
-                    .onAppear {
-                        if pokemon.name == viewModel.pokemons.last?.name {
-                            viewModel.fetchPokemonList()
+                    row
+                        .onAppear {
+                            if pokemon.name == viewModel.pokemons.last?.name {
+                                viewModel.fetchPokemonList()
+                            }
                         }
-                    }
                 }
 
                 if viewModel.isLoading {
@@ -29,13 +30,11 @@ struct PokemonListView: View {
                 }
             }
             .navigationTitle("Pokémon")
-            .overlay(
-                Group {
-                    if let error = viewModel.errorMessage {
-                        ErrorView(error: error)
-                    }
+            .overlay {
+                if let error = viewModel.errorMessage {
+                    ErrorView(error: error)
                 }
-            )
+            }
         }
     }
 }

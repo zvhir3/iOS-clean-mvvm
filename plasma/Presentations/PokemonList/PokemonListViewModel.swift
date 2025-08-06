@@ -1,5 +1,5 @@
 //
-//  HomeViewModel.swift
+//  PokemonListViewModel.swift
 //  plasma
 //
 //  Created by Luminous Latte on 06/08/2025.
@@ -12,13 +12,13 @@ class PokemonListViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var errorMessage: String?
 
-    let service: PokemonServiceProtocol
+    let repository: PokemonRepository
     private var offset = 0
     private let limit = 20
     private var canLoadMore = true
 
-    init(service: PokemonServiceProtocol) {
-        self.service = service
+    init(repository: PokemonRepository) {
+        self.repository = repository
         fetchPokemonList()
     }
 
@@ -28,7 +28,7 @@ class PokemonListViewModel: ObservableObject {
         isLoading = true
         errorMessage = nil
 
-        service.fetchPokemonList(limit: limit, offset: offset) { [weak self] result in
+        repository.fetchPokemonList(limit: limit, offset: offset) { [weak self] result in
             DispatchQueue.main.async {
                 guard let self = self else { return }
                 self.isLoading = false

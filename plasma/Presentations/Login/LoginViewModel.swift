@@ -12,10 +12,10 @@ class LoginViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var errorMessage: String? = nil
     
-    private let service: LoginServiceProtocol
+    private let repository: LoginRepository
     
-    init(service: LoginServiceProtocol) {
-        self.service = service
+    init(repository: LoginRepository) {
+        self.repository = repository
     }
     
     func login(completion: @escaping (Result<Void, Error>) -> Void) {
@@ -28,7 +28,7 @@ class LoginViewModel: ObservableObject {
         errorMessage = nil
         isLoading = true
         
-        service.login(email: email, password: password) { [weak self] result in
+        repository.login(email: email, password: password) { [weak self] result in
             DispatchQueue.main.async {
                 self?.isLoading = false
                 switch result {

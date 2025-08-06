@@ -9,12 +9,12 @@ import SwiftUI
 
 struct PokemonRow: View {
     let pokemon: NamedAPIResource
-    let service: PokemonServiceProtocol
+    let repository: PokemonRepository
 
     var body: some View {
         NavigationLink(
             destination: PokemonDetailsView(
-                viewModel: PokemonDetailsViewModel(service: service),
+                viewModel: PokemonDetailsViewModel(repository: repository),
                 pokemonName: pokemon.name
             )
         ) {
