@@ -11,43 +11,52 @@ class LoginViewModel: ObservableObject {
     @Published var password = ""
     @Published var isLoading = false
     @Published var errorMessage: String? = nil
-    @Published var user: UserModel? = nil
     
-    private let authService: LoginServiceProtocol
-    private let authChecker: AuthChecker
+    private let service: LoginServiceProtocol
     
-    init(authService: LoginServiceProtocol, authChecker: AuthChecker) {
-        self.authService = authService
-        self.authChecker = authChecker
+    init(service: LoginServiceProtocol) {
+        self.service = service
     }
     
-    func login() {
+    func login(completion: @escaping (Result<Void, Error>) -> Void) {
         guard !email.isEmpty, !password.isEmpty else {
             errorMessage = "Email and Password must not be empty."
+            completion(.failure(LoginError.emptyFields))
             return
         }
         
         errorMessage = nil
         isLoading = true
         
-        authService.login(email: email, password: password) { [weak self] result in
+        service.login(email: email, password: password) { [weak self] result in
             DispatchQueue.main.async {
                 self?.isLoading = false
                 switch result {
-                case .success(let user):
-                    self?.user = user
-                    self?.authChecker.setLoggedIn(true)
+                case .success:
+                    completion(.success(()))
                 case .failure(let error):
                     self?.errorMessage = error.localizedDescription
+                    completion(.failure(error))
                 }
             }
         }
     }
     
-    func logout() {
-        authChecker.setLoggedIn(false)
-        user = nil
+    enum LoginError: LocalizedError {
+        case emptyFields
+        
+        var errorDescription: String? {
+            switch self {
+            case .emptyFields:
+                return "Email and Password must not be empty."
+            }
+        }
+    }
+    
+    func reset() {
         email = ""
         password = ""
+        errorMessage = nil
+        isLoading = false
     }
 }

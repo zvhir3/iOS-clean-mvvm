@@ -30,7 +30,15 @@ struct LoginView: View {
                 ProgressView()
             } else {
                 Button("Login") {
-                    viewModel.login()
+                    viewModel.login { result in
+                        switch result {
+                        case .success:
+                            print("✅ Login success")
+                            // later: trigger AuthChecker.setLoggedIn(true) here
+                        case .failure(let error):
+                            print("❌ Login failed: \(error.localizedDescription)")
+                        }
+                    }
                 }
                 .buttonStyle(.borderedProminent)
             }
