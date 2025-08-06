@@ -9,25 +9,29 @@ import SwiftUI
 
 struct RootView: View {
     @StateObject private var authChecker = AuthChecker()
-    @StateObject private var loginViewModel: LoginViewModel
+    
+    private let pokemonService: PokemonServiceProtocol = RestPokemonService()
+    private let loginService: LoginServiceProtocol = MockFirebaseLoginService()
     
     init() {
         let authChecker = AuthChecker()
         _authChecker = StateObject(wrappedValue: authChecker)
-        _loginViewModel = StateObject(
-            wrappedValue: LoginViewModel(
-                authService: MockFirebaseLoginService(),
-                authChecker: authChecker
-            )
-        )
     }
     
     var body: some View {
         Group {
             if authChecker.isLoggedIn {
-                HomeView()
+                PokemonListView(
+                    viewModel: PokemonListViewModel(
+                        service: pokemonService
+                    )
+                )
             } else {
-                LoginView(viewModel: loginViewModel)
+                LoginView(
+                    viewModel: LoginViewModel(
+                        service: loginService
+                    )
+                )
             }
         }
         .animation(.easeInOut, value: authChecker.isLoggedIn)

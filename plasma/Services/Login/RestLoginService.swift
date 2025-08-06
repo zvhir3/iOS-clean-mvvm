@@ -8,7 +8,7 @@
 import Foundation
 import Alamofire
 
-class MockAlamofireLoginService: LoginServiceProtocol {
+class MockRestLoginService: LoginServiceProtocol {
     func login(email: String, password: String, completion: @escaping (Result<UserModel, Error>) -> Void) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             if email == "user@gmail.com" && password == "user123" {
